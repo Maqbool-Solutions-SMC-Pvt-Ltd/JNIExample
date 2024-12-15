@@ -7,15 +7,21 @@ public class MainApp {
     }
 
     // Native method declaration
-    private native static void sayHello(String message);
+    private native static void sayHello(Runnable runner);
 
     public static void main(String[] args) {
         System.out.println("Calling native method from Java...");
-        sayHello("Hello from Java!");
+
+        // Pass a Runnable to the native method
+        sayHello(() -> {
+            System.out.println("Hello from Java Runner!");
+        });
     }
 
     // Called back by C
-    public static void callbackFromNative(String response) {
-        System.out.println("Callback from C: " + response);
+    public static void callbackFromNative(Runnable runnable) {
+        System.out.println("Callback from C to Java completed!");
+        System.out.println("Manually invoking the Runnable's run() method:");
+        runnable.run(); // Manually call the run() method
     }
 }
