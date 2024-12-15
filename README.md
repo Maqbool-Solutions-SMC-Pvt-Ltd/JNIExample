@@ -19,3 +19,15 @@ gcc -shared -fPIC -o libs/libHelloJNI.so -I"$JAVA_HOME/include" -I"$JAVA_HOME/in
 
 java -Djava.library.path=libs -cp build com.example.jni.MainApp
 ```
+
+# Sample Output
+
+```
+$ java -Djava.library.path=libs -cp build com.example.jni.MainApp
+Calling native method from Java...
+Hello from C!
+Calling Java callback method from C...
+Callback from C to Java completed!
+Manually invoking the Runnable's run() method:
+Hello from Java Runner!
+```
