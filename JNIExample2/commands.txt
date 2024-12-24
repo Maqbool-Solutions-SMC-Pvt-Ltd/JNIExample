@@ -1,0 +1,34 @@
+mkdir JNIExample2
+
+cd JNIExample2
+mkdir -p src/main/java/com/example/jni
+mkdir -p src/main/c
+mkdir libs
+mkdir build
+
+javac -d ./build -h src/main/c src/main/java/com/example/jni/Host.java
+
+javac -d ./build src/main/java/com/example/jni/Host.java
+javac -d ./build src/main/java/com/example/jni/*.java
+gcc -shared -o libs/libnativehandler.so -fPIC -I"$JAVA_HOME/include" -I"$JAVA_HOME/include/linux" src/main/c/com_example_jni_Host.c
+
+java -Djava.library.path=libs -cp build com.example.jni.MainApp
+
+---
+
+// javac -d ./build -h src/main/c src/main/java/com/example/jni/Target.java
+
+javac -d ./build src/main/java/com/example/jni/Target.java
+//javac -d ./build src/main/java/com/example/jni/*.java
+//gcc -shared -o libs/libnativehandler.so -fPIC -I"$JAVA_HOME/include" -I"$JAVA_HOME/include/linux" src/main/c/com_example_jni_Host.c
+
+//java -Djava.library.path=libs -cp build com.example.jni.MainApp
+
+
+java -cp build com.example.jni.Target
+
+java -Djava.library.path=libs -cp build com.example.jni.Host
+
+java -Djava.library.path=libs -Xcheck:jni -verbose:jni -cp build com.example.jni.Host
+
+gdb --args java -Djava.library.path=libs -cp build com.example.jni.Host
